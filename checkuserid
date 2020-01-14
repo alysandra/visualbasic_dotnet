@@ -1,0 +1,27 @@
+   Public Function CheckUserID(ByVal strpw As String) As DataTable
+        Dim cnn As SqlConnection = New SqlConnection("Data Source=.\POSSUM_SQLE;Initial Catalog=master;Integrated Security=True")
+        Dim strSQL As String = String.Empty
+
+        Using dtResult As New DataTable
+            strSQL &= "SELECT       UserID, UserPW, UserName FROM [00Users]"
+            strSQL &= "WHERE        UserPW = @pw"
+            Using cmSQL As New SqlCommand(strSQL, cnn)
+                cmSQL.Parameters.AddWithValue("@pw", strpw)
+                cmSQL.Connection.Open()
+                Using da As New SqlDataAdapter(cmSQL)
+                    da.Fill(dtResult)
+                    If dtResult.Rows.Count < 1 Then
+                        Me.TxtB_Login.Clear()
+                    Else 'need to pull out userid & username for ref
+                        'MsgBox("LOGIN OK")
+                        myid = CStr(dtResult.Rows(0)("UserID"))
+                        myname = CStr(dtResult.Rows(0)("UserName"))
+
+                        Label_UserName.Text = "Welcome " & myname & "!"
+                        PLogin.Visible = False
+                        PStart.Visible = True
+                    End If
+                End Using
+            End Using
+        End Using
+    End Function
