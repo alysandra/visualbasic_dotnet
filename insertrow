@@ -1,0 +1,11 @@
+        Dim cnn As SqlConnection = New SqlConnection(mycon)
+        Dim strSQL2 As String = String.Empty
+
+        strSQL2 &= "INSERT INTO  [01Sales](CheckOpen,UserID,Active)"
+        strSQL2 &= "VALUES  (@CheckOpen,@myid,1)"
+        Using insSQL As New SqlCommand(strSQL2, cnn)
+            insSQL.Parameters.AddWithValue("@CheckOpen", DateTime.Today)
+            insSQL.Parameters.AddWithValue("@myid", myid)
+            cnn.Open()
+            insSQL.ExecuteNonQuery()
+        End Using
