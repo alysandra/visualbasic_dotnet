@@ -1,0 +1,5 @@
+        Using cmSQL As New SqlCommand("SELECT TOP 1 CheckNo FROM [01Sales] ORDER BY CheckNo DESC", cnn)
+            'cmSQL.Connection.Open()
+            curCheck = CType(cmSQL.ExecuteScalar(), String)
+            Label_CheckNo.Text = "Invoice No.: " & curCheck
+        End Using
