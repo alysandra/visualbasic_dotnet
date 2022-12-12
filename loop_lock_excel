@@ -1,0 +1,45 @@
+
+Sub locker()
+
+    Application.DisplayAlerts = False
+    
+    'myfolder = "D:\DM\05 Actual Table\"
+    destfolder = "D:\DM\05 Actual Table\locked\"
+    
+    'declare variable
+    Dim myfiles As String
+    
+    'declare folder to save in
+    myfiles = Dir("D:\DM\05 Actual Table\*.xlsx")
+    Do While myfiles <> ""
+        'open the files one by one
+        Workbooks.Open "D:\DM\05 Actual Table\" & myfiles
+        
+        'do stuff to file
+        
+        'check for square bracket and remove
+        mystr = myfiles
+        If InStr(mystr, "[") > 0 Then
+            mystr = Replace(mystr, "[", "(")
+            mystr = Replace(mystr, "]", ")")
+        End If
+        
+        'save as pw protected
+        
+        If InStr(mystr, "xlsx") > 0 Then
+        ActiveWorkbook.SaveAs destfolder & mystr, Password:="12345", FileFormat:=xlOpenXMLWorkbook
+        Else
+        ActiveWorkbook.SaveAs destfolder & Replace(mystr, ".csv", ""), Password:="12345", FileFormat:=xlOpenXMLWorkbook
+        End If
+        
+        ActiveWorkbook.Close
+        
+
+        
+    'next file name
+    myfiles = Dir
+    
+    Loop
+    
+
+End Sub
